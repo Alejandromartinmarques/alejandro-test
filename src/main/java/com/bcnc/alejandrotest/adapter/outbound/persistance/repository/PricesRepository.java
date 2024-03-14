@@ -4,9 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.bcnc.alejandrotest.adapter.outbound.persistance.entity.PriceEntity;
+import com.bcnc.alejandrotest.adapter.outbound.persistance.entity.ProductEntity;
 
 @Repository
 public interface PricesRepository extends JpaRepository<PriceEntity, Long>, PricesCriteriaRepository {
 
-    PriceEntity findByIdProduct(Long idProduct);
+    PriceEntity findByProductEntity(ProductEntity productEntity);
 }
