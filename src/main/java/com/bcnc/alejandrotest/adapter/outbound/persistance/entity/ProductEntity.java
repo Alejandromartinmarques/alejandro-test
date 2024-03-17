@@ -1,7 +1,6 @@
 package com.bcnc.alejandrotest.adapter.outbound.persistance.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,11 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Builder;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "PRODUCTS")
+@Builder
 public class ProductEntity {
 
     @Id
@@ -34,9 +36,5 @@ public class ProductEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "BRAND_ID")
     private BrandEntity brandEntity;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PRODUCT_ID")
-    private List<PriceEntity> pricesEntities;
 
 }

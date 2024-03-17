@@ -22,10 +22,6 @@ public class PriceEntity {
     @Column(name = "PRICE_LIST")
     private Long id;
 
-    // TODO comentar en la prueba que si relacionasemos brand con price entity,
-    // entonces, pondrias brand como EAGER y product como lazy, pero que siguiedo el
-    // patrón de DDD esto no tiene sentido
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "PRODUCT_ID")
     private ProductEntity productEntity;

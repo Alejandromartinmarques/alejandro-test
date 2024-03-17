@@ -1,11 +1,10 @@
 package com.bcnc.alejandrotest.application.provider;
 
-import java.util.UUID;
 
 import com.bcnc.alejandrotest.domain.Product;
 
 /**
- * This interface provide products to application layer
+ * This interface provide products.
  */
 public interface ProductsProvider {
 
@@ -15,5 +14,5 @@ public interface ProductsProvider {
      * @param productId Id of product
      * @return return a Product domain object
      */
-    public Product findProduct(UUID productId);
+    public Product findProduct(Long productId);
 }

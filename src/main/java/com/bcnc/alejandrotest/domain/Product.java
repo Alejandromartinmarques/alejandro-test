@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * This class represent the product domain object in the application
+ * This domain class represent the concept of product in this project.
  * 
  * @author Alejandro Martin Marques
  */
@@ -15,7 +15,7 @@ import lombok.Data;
 @Data
 public class Product {
 
-    private String id;
+    private Long id; 
     private String name;
     private LocalDate creationDate;
     private ProductStatus status;

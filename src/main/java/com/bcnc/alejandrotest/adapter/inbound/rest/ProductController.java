@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceDto;
+import com.bcnc.alejandrotest.adapter.inbound.rest.converter.ProductToProductDtoConverter;
+import com.bcnc.alejandrotest.adapter.inbound.rest.dto.ProductDto;
+import com.bcnc.alejandrotest.application.SearchProductUseCase;
+import com.bcnc.alejandrotest.domain.Product;
 
 /**
- * Controlled where is declared all endpoints of products
+ * This controller class contains the endpoints of products.
  * 
  * @author Alejandro Martin Marques
  */
@@ -18,14 +21,27 @@ import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceDto;
 @RequestMapping("/products")
 public class ProductController {
 
-    @GetMapping("/{id}/price")
-    public ResponseEntity<PriceDto> getPrice(@PathVariable("id") Long productId) {
-        // TODO poner en el readme que hice este endpoint por que como el otro eran
-        // filtros tan abiertos tuve que usar criteria para hacer un diseño extensible,
-        // por ejemplo poner mas filtros,
-        // TODO por eso he hecho este endpoint para utilizar la verbosidad de JPA que es
-        // más simple aunque no lo pidiese en el enunciado
-        return new ResponseEntity<>(null, HttpStatus.NOT_IMPLEMENTED);
+    //Use Cases
+    private SearchProductUseCase searchProductUseCase;
+
+    //Converters
+    private ProductToProductDtoConverter productToProductDtoConverter;
+
+    /**
+     * This controller method contains the GET endpoint with path /products/id, is used to search the detail information for single product by product id.
+     * @param productId Product id
+     * @return
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDto> getPrice(@PathVariable("id") Long productId) {
+        
+        //Call Use case
+        Product productDomain = searchProductUseCase.searchProductUseCase(productId);
+
+        //Prepare and return response
+        ProductDto productDto = productToProductDtoConverter.productToProductDto(productDomain);
+        
+        return new ResponseEntity<ProductDto>(productDto, HttpStatus.OK);
     }
 
 }

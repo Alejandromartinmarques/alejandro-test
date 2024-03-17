@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 /**
- * This class represent the price domain object in the application
+ * This domain class represent the concept of price in this project.
  * 
  * @author Alejandro Martin Marques
  */
