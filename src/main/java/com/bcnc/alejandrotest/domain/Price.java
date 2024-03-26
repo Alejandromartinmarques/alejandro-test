@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * This domain class represent the concept of price in this project.
@@ -13,6 +15,8 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Price {
 
     private Long id;
@@ -20,6 +24,6 @@ public class Price {
     private LocalDateTime endAplicableDate;
     private Long priorityScore;
     private String currency;
-    private BigDecimal ammount;
+    private BigDecimal amount;
 
 }

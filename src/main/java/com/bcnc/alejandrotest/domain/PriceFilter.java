@@ -14,5 +14,7 @@ public class PriceFilter {
 
     PageFilter pageFilter;
     Long idProduct;
+    LocalDateTime startDate;
+    LocalDateTime endDate;
     LocalDateTime date;
 }

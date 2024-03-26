@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.bcnc.alejandrotest.adapter.outbound.persistance.entity.PriceEntity;
 import com.bcnc.alejandrotest.domain.PriceFilter;
@@ -22,13 +22,13 @@ import lombok.RequiredArgsConstructor;
  * 
  * @author Alejandro Martin Marques
  */
-@Repository
+@Component
 @RequiredArgsConstructor
 public class PricesCriteriaRepositoryImpl implements PricesCustomRepository {
     private final EntityManager entityManager;
 
     @Override
-    public Optional<List<PriceEntity>> findPricesByDinamicFilter(PriceFilter priceFilter) {
+    public Optional<List<PriceEntity>> findPricesByPriceFilter(PriceFilter priceFilter) {
 
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PriceEntity> criteriaQuery = criteriaBuilder.createQuery(PriceEntity.class);
@@ -53,7 +53,7 @@ public class PricesCriteriaRepositoryImpl implements PricesCustomRepository {
     }
 
     private List<jakarta.persistence.criteria.Predicate> getPredicatesByPriceFilter(CriteriaBuilder criteriaBuilder,
-            Root<PriceEntity> root, PriceFilter priceFilter) {
+        Root<PriceEntity> root, PriceFilter priceFilter) {
         List<jakarta.persistence.criteria.Predicate> predicates = new ArrayList<>();
 
         // Filter of product
@@ -61,13 +61,22 @@ public class PricesCriteriaRepositoryImpl implements PricesCustomRepository {
             predicates.add(criteriaBuilder.equal(root.get("productEntity").get("id"), priceFilter.getIdProduct()));
         }
 
-        // Filter of date
-        if (priceFilter.getDate() != null) {
-            predicates.add(criteriaBuilder.and(
-                    criteriaBuilder.greaterThan(root.get("startDate"), priceFilter.getDate()),
-                    criteriaBuilder.lessThan(root.get("endDate"), priceFilter.getDate())));
+        // Filter date range
+        if (priceFilter.getStartDate() != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), priceFilter.getStartDate()));
+        }
+        if (priceFilter.getEndDate() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), priceFilter.getEndDate()));
         }
 
+        //Filter specific date
+        if (priceFilter.getDate() != null) {
+            predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("startDate"), priceFilter.getDate()));
+        }
+
+        if (priceFilter.getDate() != null) {
+            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"), priceFilter.getDate()));
+        }
         return predicates;
     }
 

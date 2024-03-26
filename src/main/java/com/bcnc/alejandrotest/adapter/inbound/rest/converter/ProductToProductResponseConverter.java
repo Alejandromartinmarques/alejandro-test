@@ -2,7 +2,7 @@ package com.bcnc.alejandrotest.adapter.inbound.rest.converter;
 
 import org.mapstruct.Mapper;
 
-import com.bcnc.alejandrotest.adapter.inbound.rest.dto.ProductDto;
+import com.bcnc.alejandrotest.adapter.inbound.rest.dto.ProductResponse;
 import com.bcnc.alejandrotest.domain.Product;
 
 /**
@@ -11,7 +11,8 @@ import com.bcnc.alejandrotest.domain.Product;
  * @author Alejandro Martin Marques
  */
 @Mapper(componentModel = "spring")
-public interface ProductToProductDtoConverter {
+public interface ProductToProductResponseConverter {
 
-    ProductDto productToProductDto(Product product);
+    ProductResponse productToProductDto(Product product);
+    
 }

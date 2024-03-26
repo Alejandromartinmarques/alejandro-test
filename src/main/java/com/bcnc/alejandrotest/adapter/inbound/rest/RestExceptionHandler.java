@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.bcnc.alejandrotest.adapter.inbound.rest.dto.RestExceptionDto;
 import com.bcnc.alejandrotest.domain.exception.BusinessException;
 import com.bcnc.alejandrotest.domain.exception.ElementNotFoundException;
+import com.bcnc.alejandrotest.domain.exception.InvalidRequestException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This controller advice class is used to manage exception in project and return a controlled error in requests.
@@ -15,6 +18,7 @@ import com.bcnc.alejandrotest.domain.exception.ElementNotFoundException;
  * @author Alejandro Martin Marques
  */
 @ControllerAdvice
+@Slf4j
 public class RestExceptionHandler {
 
     /**
@@ -33,6 +37,24 @@ public class RestExceptionHandler {
 
         //Return response with controled error
         return new ResponseEntity<RestExceptionDto>(restExceptionDto, HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * This controller advice method, is executed when some request is not valid
+     * @param elementNotFoundException Exception throwerd in run time.
+     * @return Controlled error.
+     */
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<RestExceptionDto> handleElementNotFoundException(InvalidRequestException invalidRequestException){
+
+        //Build exception object
+        RestExceptionDto restExceptionDto = RestExceptionDto.builder()
+            .errorType("InvalidRequestException")
+            .errorMessage(invalidRequestException.getMessage())
+            .build();
+
+        //Return response with controled error
+        return new ResponseEntity<RestExceptionDto>(restExceptionDto, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -60,7 +82,7 @@ public class RestExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestExceptionDto> handleUncontroledException(Exception exception){
-       
+        log.error("Exception ocurred: "+exception.getMessage());
         //Build exception object
         RestExceptionDto restExceptionDto = RestExceptionDto.builder()
             .errorType("UncontroledException")

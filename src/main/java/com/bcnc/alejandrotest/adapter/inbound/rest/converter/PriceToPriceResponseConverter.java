@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceDto;
+import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceResponse;
 import com.bcnc.alejandrotest.domain.Price;
 
 /**
@@ -14,16 +14,16 @@ import com.bcnc.alejandrotest.domain.Price;
  * @author Alejandro Martin Marques
  */
 @Mapper(componentModel = "spring")
-public interface PriceToPriceDtoConverter {
+public interface PriceToPriceResponseConverter {
     
     @Mapping(source = "priorityScore", target = "priority")
-    PriceDto priceToPriceDto(Price price);
+    PriceResponse priceToPriceDto(Price price);
 
     /**
      * This converter method is necessary to convert a list of elements with mapstruct
      * @param prices list of prices (domain object) to convert
      * @return
      */
-    List<PriceDto> pricesToPriceDtos(List<Price> prices);
+    List<PriceResponse> pricesToPriceDtos(List<Price> prices);
 
 }

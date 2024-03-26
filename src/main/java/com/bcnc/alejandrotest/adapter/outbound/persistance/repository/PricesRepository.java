@@ -10,7 +10,12 @@ import com.bcnc.alejandrotest.adapter.outbound.persistance.entity.PriceEntity;
 import com.bcnc.alejandrotest.adapter.outbound.persistance.entity.ProductEntity;
 
 @Repository
-public interface PricesRepository extends JpaRepository<PriceEntity, Long>, PricesCustomRepository {
+public interface PricesRepository extends JpaRepository<PriceEntity, Long> {
 
-    Optional<PriceEntity> findFirstByProductEntityAndStartDateBeforeAndEndDateAfterOrderByPriorityDesc(ProductEntity productEntity, LocalDateTime currentDate);
+
+    Optional<PriceEntity> findFirstByProductEntityAndStartDateBeforeAndEndDateAfterOrderByPriorityDesc(
+        ProductEntity productEntity, 
+        LocalDateTime startDate, 
+        LocalDateTime endDate
+    );
 }

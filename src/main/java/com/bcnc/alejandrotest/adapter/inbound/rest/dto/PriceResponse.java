@@ -3,6 +3,9 @@ package com.bcnc.alejandrotest.adapter.inbound.rest.dto;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,10 +15,14 @@ import lombok.Data;
  */
 @Data
 @AllArgsConstructor
-public class PriceDto {
+public class PriceResponse {
+
     private Long id;
-    private LocalDateTime startAplicableDate;
-    private LocalDateTime endAplicableDate;
     private Long priority;
-    private BigDecimal ammount;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startAplicableDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endAplicableDate;
+    private BigDecimal amount;
+    private String currency;
 }

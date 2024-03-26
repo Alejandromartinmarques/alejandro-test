@@ -7,17 +7,17 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bcnc.alejandrotest.adapter.inbound.rest.converter.PriceFilterDtoToPriceFilterConverter;
-import com.bcnc.alejandrotest.adapter.inbound.rest.converter.PriceToPriceDtoConverter;
-import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceDto;
-import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceFilterDto;
+import com.bcnc.alejandrotest.adapter.inbound.rest.converter.PriceFilterRequestToPriceFilterConverter;
+import com.bcnc.alejandrotest.adapter.inbound.rest.converter.PriceToPriceResponseConverter;
+import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceResponse;
+import com.bcnc.alejandrotest.adapter.inbound.rest.dto.PriceFilterRequest;
 import com.bcnc.alejandrotest.application.SearchPricesUseCase;
 import com.bcnc.alejandrotest.domain.Price;
 import com.bcnc.alejandrotest.domain.PriceFilter;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 /**
@@ -34,8 +34,8 @@ public class PriceController {
     private final SearchPricesUseCase searchPricesUseCase;
     
     //Converters
-    PriceFilterDtoToPriceFilterConverter priceFilterDtoToPriceFilterConverter;
-    PriceToPriceDtoConverter priceToPriceDtoConverter;
+    private final PriceFilterRequestToPriceFilterConverter priceFilterDtoToPriceFilterConverter;
+    private final PriceToPriceResponseConverter priceToPriceDtoConverter;
 
     /**
      * This controller method contains the GET endpoint with path /prices, is used to consult prices with dynamicly PriceFilterDto.
@@ -43,8 +43,8 @@ public class PriceController {
      * @return
      */
     @GetMapping
-    public ResponseEntity<List<PriceDto>> getProductPricesByProduct(@RequestParam PriceFilterDto priceFilterDto) {
-        
+    public ResponseEntity<List<PriceResponse>> getProductPricesByProduct(@Valid PriceFilterRequest priceFilterDto) {
+
         //Convert priceFilterDto to domain object
         PriceFilter priceFilterDomain = priceFilterDtoToPriceFilterConverter.priceFilterDtoToPriceFilter(priceFilterDto);
         
@@ -52,9 +52,9 @@ public class PriceController {
         List<Price> pricesDomain = searchPricesUseCase.searchPricesByPriceFilterUseCase(priceFilterDomain);
         
         //Prepare and return response
-        List<PriceDto> pricesResponse = priceToPriceDtoConverter.pricesToPriceDtos(pricesDomain);
+        List<PriceResponse> pricesResponse = priceToPriceDtoConverter.pricesToPriceDtos(pricesDomain);
         HttpStatusCode statusCodeResponse = pricesResponse.isEmpty() ? HttpStatus.NO_CONTENT : HttpStatus.OK; 
 
-        return new ResponseEntity<List<PriceDto>>(pricesResponse, statusCodeResponse);
+        return new ResponseEntity<List<PriceResponse>>(pricesResponse, statusCodeResponse);
     }
 }

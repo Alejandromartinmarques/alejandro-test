@@ -39,7 +39,7 @@ public class ProductAdapter implements ProductsProvider {
 
             //Set current price of product
             Price currentPriceOfProduct = pricesProvider.findCurrentPriceOfProductByProductId(productDomain.getId());
-            productDomain.setPrice(currentPriceOfProduct.getAmmount());
+            productDomain.setPrice(currentPriceOfProduct != null ? currentPriceOfProduct.getAmount() : null);
 
             return productDomain;
         }else{

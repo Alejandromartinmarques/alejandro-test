@@ -16,9 +16,12 @@ import com.bcnc.alejandrotest.domain.Price;
 @Mapper(componentModel = "spring")
 public interface PriceEntityToPriceConverter {
     
+    
     @Mapping(source = "startDate", target = "startAplicableDate")
     @Mapping(source = "endDate", target = "endAplicableDate")
-    Price priceEntityToPrice(PriceEntity priceEntity);
+    @Mapping(source = "priority", target = "priorityScore")
+    @Mapping(source = "price", target = "amount")
+    Price priceEntityToPrice(PriceEntity source);
 
     /**
      * This converter method is necessary to convert a list of elements with mapstruct
